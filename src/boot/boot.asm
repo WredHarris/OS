@@ -28,7 +28,7 @@ step2:
     or eax, 0x1
     mov cr0, eax
     jmp CODE_SEG:load32
-    
+
 gdt_start:
 gdt_null:
     dd 0x0
@@ -76,7 +76,7 @@ ata_lba_read:
     out dx, al
 
     mov eax, ebx
-    mov dx, 0x1F2
+    mov dx, 0x1F3
     out dx, al
 
     mov dx, 0x1F4
