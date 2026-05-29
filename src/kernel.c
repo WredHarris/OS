@@ -7,6 +7,7 @@
 #include <stdint.h>
 #include "stdint.h"
 #include "idt/idt.h"
+#include "io/io.h"
 
 uint16_t* video_mem = 0;
 uint16_t terminal_row = 0;
@@ -73,9 +74,10 @@ void print(const char* str)
 void kernel_main()
 {
     terminal_init();
-    print("Test\nTest");
+    print("Hello Blake!\n");
 
     idt_init();
+
 
 
 }

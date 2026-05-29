@@ -1,6 +1,8 @@
 [BITS 32]
 
 global _start
+global problem
+
 
 extern kernel_main
 CODE_SEG equ 0x08
@@ -20,6 +22,19 @@ _start:
     in al, 0x92
     or al, 2
     out 0x92, al
+
+
+    ; Remap the Master PIC
+    mov al, 00010001b
+    out 0x20, al
+
+    mov al, 0x20
+    out 0x21, al
+
+    mov al, 000000001b
+    out 0x21, al
+
+    sti
 
     call kernel_main ; Call C Main Kernel Function
     jmp $
