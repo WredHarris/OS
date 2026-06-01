@@ -145,6 +145,27 @@ out:
     return address;
     }
 
+    int heap_address_to_block(struct heap* heap, void*address)
+    {
+        return ((int)(address - heap->saddr)) / OS_HEAP_BLOCK_SIZE;
+    }
+
+    void heap_mark_blocks_free(struct heap* heap, int starting_block)
+    {
+        struct heap_table* table = heap->table;
+
+        for (int i = starting_block; i < (int)table->total; i++)
+        {
+            HEAP_BLOCK_TABLE_ENTRY entry = table->entries[i];
+            table->entries[i] = HEAP_BLOCK_TABLE_ENTRY_FREE;
+
+            if (!(entry & HEAP_BLOCK_HAS_NEXT))
+            {
+                break;
+            }
+        }
+    }
+
     void* heap_malloc(struct heap* heap, size_t size)
     {
         size_t aligned_size = heap_align_upper(size);
@@ -154,5 +175,6 @@ out:
     }
     void* heap_free(struct heap* heap, void* ptr)
     {
-        return 0;
+        heap_mark_blocks_free(heap, heap_address_to_block(heap, ptr));
+
     }
